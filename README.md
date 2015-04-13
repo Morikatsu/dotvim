@@ -1,5 +1,5 @@
 # dotvim
-test
+TEST
 ======
 
 Githubのテスト
@@ -7,4 +7,4 @@ Githubのテスト
 ##メンバー
 
 *testmember
-
+ABCDEF
