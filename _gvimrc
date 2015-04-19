@@ -1,0 +1,147 @@
+scriptencoding utf-8
+" vim:set ts=4 sts=4 sw=4 tw=0: (この行に関しては:help modelineを参照)
+"
+" An example for a Japanese version gvimrc file.
+" 日本語版のデフォルトGUI設定ファイル(gvimrc) - Vim7用試作
+"
+" Last Change: 2013/09/05 13:44:42.   ----- 堀野守克 -----
+" Maintainer:  MURAOKA Taro <koron@tka.att.ne.jp>
+"
+" 解説:
+" このファイルにはVimの起動時に必ず設定される、GUI関連の設定が書かれていま
+" す。編集時の挙動に関する設定はvimrcに書かかれています。
+
+" 個人用設定は_gvimrcというファイルを作成しそこで行ないます。_gvimrcは gvimrc
+" の後に読込まれるため、gvimrcに書かれた内容を上書きして設定することが出来ます。
+" _gvimrcは$HOMEまたは$VIMに置いておく必要があります。$HOMEは$VIMよりも
+" 優先され、$HOMEでみつかった場合$VIMは読込まれません。
+"   読み込まれる順序は vimrc => _vimrc => gvimrc => _gvimrc である。詳細は
+"   :scriptnamesでわかる。
+"
+" 注) gvimrcには各設定ファイルの読み込み制御だけを残し、具体的なvimの動作の設定
+"     は_gvimrcにて行うこととした。	  Vista    08/02/24
+"   gvimrc => $VIM
+"	_gvimrc	=>	$VIM
+" 注) 印刷に関する設定は printrc.vim にて行うことにした。	2013/05/22 
+"
+" 管理者向けに本設定ファイルを直接書き換えずに済ませることを目的として、サイ
+" トローカルな設定を別ファイルで行なえるように配慮してあります。Vim起動時に
+" サイトローカルな設定ファイル($VIM/gvimrc_local.vim)が存在するならば、本設
+" 定ファイルの主要部分が読み込まれる前に自動的に読み込みます。
+"	(堀野メモ)	2011/02/21 
+"	gvim_local.vimは作成していない。
+"
+" 読み込み後、変数g:gvimrc_local_finishが非0の値に設定されていた場合には本設
+" 定ファイルに書かれた内容は一切実行されません。デフォルト動作を全て差し替え
+" たい場合に利用して下さい。
+"
+" 参考:
+"   :help gvimrc
+"   :echo $HOME
+"   :echo $VIM
+"   :version
+"---------------------------------------------------------------------------
+" Bram氏の提供する設定例をインクルード (別ファイル:vimrc_example.vim)。これ
+" 以前にg:no_gvimrc_exampleに非0な値を設定しておけばインクルードしない。
+"		以下の3行は gvimrc にあったものをここに移動した。2013/05/29 
+"if 1 && (!exists('g:no_gvimrc_example') || g:no_gvimrc_example == 0)
+"  source $VIMRUNTIME/gvimrc_example.vim
+"endif
+"--------------------------------------------------------------------------
+" カラー設定:
+"colorscheme morning
+" 画面を黒地に白にする (次行の先頭の " を削除すれば有効になる)
+colorscheme evening " (GUI使用時)
+"---------------------------------------------------------------------------
+" 日本語入力に関する設定:
+"	(堀野メモ)	2011/02/21 
+"	この部分はgvimrcではだめで、_gvimrcにある必要がある。
+"
+if has('multi_byte_ime') || has('xim')
+  " IME ON時のカーソルの色を設定(設定例:紫)
+  highlight CursorIM guibg=Purple guifg=NONE
+  " 挿入モード・検索モードでのデフォルトのIME状態設定
+  set iminsert=0 imsearch=0
+  if has('xim') && has('GUI_GTK')
+    " XIMの入力開始キーを設定:
+    " 下記の s-space はShift+Spaceの意味でkinput2+canna用設定
+    "set imactivatekey=s-space
+  endif
+  " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
+  "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+endif
+
+"--------------------------------------------------------------------------
+" 画面表示用フォント設定:
+"
+if has('win32')
+  " Windows用
+   "set guifont=ゆたぽん:h11:cSHIFTJIS
+   set guifont=VL_Gothic_Regular:h10:cSHIFTJIS
+   "set guifont=小夏等幅:h10:cSHIFTJIS
+   "set guifont=アニトL-等幅教漢:h12:cSHIFTJIS
+   "set guifont=IPAゴシック:h10:cSHIFTJIS
+   "set guifont=MS_Gothic:h11:cSHIFTJIS
+  " 行間隔の設定
+  set linespace=1
+  " 一部のUCS文字の幅を自動計測して決める
+  if has('kaoriya')
+    set ambiwidth=auto
+  endif
+elseif has('mac')
+  set guifont=Osaka－等幅:h14
+elseif has('xfontset')
+  " UNIX用 (xfontsetを使用)
+  set guifontset=a14,r14,k14
+endif
+"
+"---------------------------------------------------------------------------
+" ウインドウに関する設定:
+"
+" ウインドウの幅
+set columns=80
+" ウインドウの高さ
+set lines=25
+" コマンドラインの高さ(GUI使用時)
+set cmdheight=1
+" ウインドウを分割する
+":vsplit
+"--------------------------------------------------------------------------
+" マウスに関する設定:
+"	2013/09/02 この部分はgvimrcに戻す
+"
+"--------------------------------------------------------------------------
+"クリップボードをWindowsと連携
+set clipboard=unnamed
+"--------------------------------------------------------------------------
+" その他、見栄えに関する設定:
+"
+" 検索文字列をハイライトしない(_vimrcではなく_gvimrcで設定する必要がある)
+set hlsearch
+"--------------------------------------------------------------------------
+"<ESC>uでハイライトをスイッチトグルする
+function Highlight_switch()
+    if &hls == '1'
+		set nohlsearch
+    else
+	    set hlsearch
+    endif
+endfunction
+nmap <ESC>u :call Highlight_switch()<CR>
+
+"--------------------------------------------------------------------------
+" vimdiffに関する設定
+set diffopt=filler,vertical,iwhite
+"--------------------------------------------------------------------------
+" 印刷に関する設定:
+" 注意:
+"	印刷はGUIでなくてもできるのでprintrc.vim で設定することにした。
+"		$VIM\vim73\plugin\printrc.vim
+"		
+"--------------------------------------------------------------------------
+" 参考:
+"   :hardcopy
+"   :help 'printfont'
+"   :help printing
+"---------------------------------------------------------------------------
+" Copyright (C) 2007 KaoriYa/MURAOKA Taro
