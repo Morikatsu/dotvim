@@ -1,0 +1,35 @@
+	my_Html.txt
+            –x–ì ç
+            Last Change:2013/09/05 13:35:03.
+
+iab _1 <h1></h1><ESC>4hi
+iab _2 <h2></h2><ESC>4hi
+iab _3 <h3></h3><ESC>4hi
+iab _4 <h4></h4><ESC>4hi
+iab _5 <h5></h5><ESC>4hi
+iab _ah <a href="" alt=""></a><ESC>Ff3li
+iab _an <a name=""></a><ESC>F=2li
+iab _b <br />
+iab _d <div >
+iab _dc <div class=""><ESC>F=3i
+iab _di <div id=""><ESC>F=3li
+iab _dn <div name=""><ESC>F=3li
+iab _im <img src="" alt=""><ESC>8hi
+iab _l <li>
+iab _p <p>
+iab _st <strong></strong><ESC>F>li
+iab _ta <table></table><ESC>F\/2hi
+iab _td <td></td><ESC>F<i
+iab _th <th></th><ESC>F<i
+iab _tr <tr><ESC>o</tr><ESC>O
+iab _u <ul><ESC>o<li></li><ESC>o</ul><ESC>kf>li
+iab __ &nbsp;
+iab _< &lt;
+iab _> &gt;
+iab _& &amp;
+iab _C <!--  --><ESC>F!3li
+iab _< <!--  --><ESC>F!3li
+iab _h <!--  --><ESC>F!3li
+iab _* /*  */<ESC>2hi
+
+ vim:set ts=4 sts=4 sw=4 tw=0 et ft=memo:

@@ -1,13 +1,12 @@
-" vim:set ts=4 sts=4 sw=4 tw=0: (この行に関しては:help modelineを参照)
-" vim:set foldmethod=marker
+" vim:set ts=4 sts=4 sw=4 tw=0 ft=vim : (この行に関しては:help modelineを参照)
 "
 " An example for a Japanese version vimrc file.
 " 日本語版のデフォルト設定ファイル(vimrc) - Vim7用試作
 "
-" Last Change: 2013/10/24 16:06:15.  ----- 堀野守克 ----- 07/07/17 ---
+" Last Change: 2015/05/28 15:45:48.  ----- 堀野守克 ----- 07/07/17 ---
 " Maintainer:  MURAOKA Taro <koron@tka.att.ne.jp>
 "
-" 解説:"{{{
+" 解説:
 " このファイルにはVimの起動時に必ず設定される、編集時の挙動に関する設定が書
 " かれています。GUIに関する設定はgvimrcに書かかれています。
 "
@@ -27,6 +26,10 @@
 " _vimrc(このファイル)にあった印刷用設定は $VIM/vim73/plugin/printrc.vim にて
 " 行うこととした。  2013/05/29 
 "
+"	重要な注意事項
+"	注意 予め $HOME/AppData/Local の中にディレクトリ Vim を作成しておくこと。　15/05/16
+"	注意 予め $HOME\AppData\Local\Vim\ の中に Vim_backup というディレクトリを作成しておくこと	15/05/16
+"
 " 管理者向けに本設定ファイルを直接書き換えずに済ませることを目的として、サイ
 " トローカルな設定を別ファイルで行なえるように配慮してあります。Vim起動時に
 " サイトローカルな設定ファイル($VIM/vimrc_local.vim)が存在するならば、本設定
@@ -43,10 +46,12 @@
 "   :help vimrc
 "   :echo $HOME
 "   :echo $VIM
-"   :version"}}}
+"   :version
+"===========================================================================
 "----------------------------------------
 " Kaoriya対策
 "----------------------------------------
+""""""""""""""""""""""""""""""
 "g:no_vimrc_exampleを利用してvimrc_example.vimを無効化している時はここで読込
 """"""""""""""""""""""""""""""
 if exists('g:no_vimrc_example') && g:no_vimrc_example == 1
@@ -55,27 +60,17 @@ endif
 "プラグインを有効にする
 filetype plugin indent on
 "=======================================================
-" カレントディレクトリの設定
-"-------------------------------------------------------
-" ファイルのディレクトリを自動的にカレントディレクトリに変更します
-"au BufEnter * execute ":lcd " . expand("%:p:h")
-:let $WK="c:\\users\\tora\\documents\\libreoffice_basic\\basicmacro"
-" この$WKはその時々の関心事により変更するとよい。
-" :cd $WK でディレクトリを変更できる。
-"=======================================================
 " utf-8で読み込む	2013/08/14 
 set encoding=utf-8
-set fileencoding=utf-8
-"	vim 7.4.16 では以下の3行を追加するとメニューが文字化けする
-"				2013/09/03 
 "	メニューが文字化けするので、以下の3行を加える
-"source $VIMRUNTIME/delmenu.vim
-"set langmenu=ja_jp.utf-8
-"source $VIMRUNTIME/menu.vim
+source $VIMRUNTIME/delmenu.vim
+set langmenu=ja_jp.utf-8
+source $VIMRUNTIME/menu.vim
+
+
 "===========================================================================
 "バッファ切り替えの際に作業ディリクトリを変更する
 set autochdir
-set browsedir=current
 "---------------------------------------------------------------------------
 " 検索の挙動に関する設定:
 "
@@ -83,7 +78,7 @@ set browsedir=current
 set noignorecase
 " 大文字小文字の両方が含まれている場合は大文字小文字を区別
 set smartcase
-"---------------------------------------------------------------------------
+"===========================================================================
 " 編集に関する設定:
 "
 " タブの画面上での幅
@@ -111,21 +106,20 @@ set formatoptions+=mM
 " 日本語整形スクリプト(by. 西岡拓洋さん)用の設定
 let format_allow_over_tw = 1	" ぶら下り可能幅
 "
-set undolevels=100
-"
 " エラーベルを鳴らさない
 set noerrorbells
 " ビジュアルベルを使う
 set visualbell
 "
-"---------------------------------------------------------------------------
+"===========================================================================
 " key binding
-" <F12>をカーソル位置に日付を入れる機能を割り付けた
+"		<F12> をカーソル位置に日付を入れる機能を割り付けた
+"
 map <F12> :r !date /t<CR>kJ
 map! <F12> <Esc>:r !date /t<CR>kJ
 "--- 入力モードのときに括弧を自動で閉じる ---
-"imap ( ()<LEFT><ESC>i
-"map { {}<LEFT><ESC>i
+imap ( ()<LEFT><ESC>i
+map { {}<LEFT><ESC>i
 "--- 入力モードでもh,j,k,lの動作 -----------------------------
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
@@ -138,60 +132,65 @@ imap <C-a> <Esc>:w<CR>a
 imap <C-A> <Esc>A
 "imap <C-j> <C-[>
 map <C-u> <Esc>
-"=== 短縮入力 ================================================
-"   挿入モードで xxx (space)と打つとYYが挿入される
-	"iab _ifc _?ifcnst
-	"iab _foric _?forinccnst
-	"iab _fordc _?fordeccnst
-	"iab _wc _?whilecnst
-	"iab _uc _?untilecnst
-	"iab _cc _?casecnst
-	"iab _ccc _?c_casecnst
-	"---- 以下はhtml用の短縮入力 -------
-	iab _1 <h1></h1><ESC>4hi
-	iab _2 <h2></h2><ESC>4hi
-	iab _3 <h3></h3><ESC>4hi
-	iab _4 <h4></h4><ESC>4hi
-	iab _5 <h5></h5><ESC>4hi
-	iab _ah <a href="" alt=""><ESC>Ff3li
-	iab _an <a name=""><ESC>F=2li
-	iab _b <br />
-	iab _d <div >
-	iab _dc <div class=""><ESC>F=i
-	iab _di <div id=""><ESC>F=li
-	iab _dn <div name=""><ESC>F=li
-	iab _im <img src="" alt=""><ESC>8hi
-	iab _l <li>
-	iab _p <p>
-	iab _pc <p class=""><ESC>hi
-	iab _pi <p id=""><ESC>hi
-	iab _pindt <p class="indt"><ESC>hi
-	iab _st <strong></strong><ESC>F>li
-	iab _ta <table></table><ESC>F\/2hi
-	iab _td <td></td><ESC>F<i
-	iab _th <th></th><ESC>F<i
-	iab _tr <tr><ESC>o</tr><ESC>O
-	iab _u <ul><ESC>o<li></li><ESC>o</ul><ESC>kf>li
-	iab __ &nbsp;
-	iab _< &lt;
-	iab _> &gt;
-	iab _& &amp;
-	iab _C <!--  --><ESC>F!3li
-	iab _h <!--  --><ESC>F!3li
-	iab _* /*  */<ESC>2hi
+"--- 短縮入力 ------------------------------------------------
+"   挿入モードでxx (space)と打つとYYが挿入される
+"iab _ifc _?ifcnst
+"iab _foric _?forinccnst
+"iab _fordc _?fordeccnst
+"iab _wc _?whilecnst
+"iab _uc _?untilecnst
+"iab _cc _?casecnst
+"iab _ccc _?c_casecnst
 
-"========= EnhancedCommetify ===================================
-let g:EnhCommentifyAlignRight = 'yes'
-let g:EnhCommentifyPretty = 'yes'
+iab _1 <h1></h1><ESC>4hi
+iab _2 <h2></h2><ESC>4hi
+iab _3 <h3></h3><ESC>4hi
+iab _4 <h4></h4><ESC>4hi
+iab _5 <h5></h5><ESC>4hi
+iab _ah <a href="" alt=""><ESC>Ff3li
+iab _an <a name=""><ESC>F=2li
+iab _b <br />
+iab _d <div >
+iab _dc <div class=""><ESC>F=i
+iab _di <div id=""><ESC>F=li
+iab _dn <div name=""><ESC>F=li
+iab _im <img src="" alt=""><ESC>8hi
+iab _l <li>
+iab _p <p>
+iab _pc <p class=""><ESC>hi
+iab _pindt <p class="indt"><ESC>hi
+iab _pi <p id=""><ESC>hi
+iab _st <strong></strong><ESC>F>li
+iab _ta <table></table><ESC>F\/2hi
+iab _td <td></td><ESC>F<i
+iab _th <th></th><ESC>F<i
+iab _tr <tr><ESC>o</tr><ESC>O
+iab _u <ul><ESC>o<li></li><ESC>o</ul><ESC>kf>li
+iab __ &nbsp;
+iab _< &lt;
+iab _> &gt;
+iab _& &amp;
+iab _C <!--  --><ESC>F!3li
+iab _h <!--  --><ESC>F!3li
+iab _* /*  */<ESC>2hi
+
+" iab _c* /*  */
+""========= EnhancedCommetify ===================================
+"let g:EnhCommentifyAlignRight = 'yes'
+"let g:EnhCommentifyPretty = 'yes'
+"===========================================================================
 "========= タグを閉じる closetag.vim の設定 ====================
 let g:closetag_html_style=1
-source $VIMRUNTIME/macros/closetag.vim
+"source $VIMRUNTIME/macros/closetag.vim
+source $VIM/vim74/macros/closetag.vim
 " closetag.vimの81,82行目を以下のように修正した。
 "inoremap <C-]> <C-R>=GetCloseTag()<CR><ESC>F<i
 "map <C-]> a<C-]><ESC>n
+"===========================================================================
 "-------- matchit.vim ------------------------------------------
-source $VIMRUNTIME/macros/matchit.vim
-let b:match_words = "<:>,<div.*>:</div>,<table.*>:</table>,<ul.*>:</ul>"
+"source $VIMRUNTIME/macros/matchit.vim
+source $VIM/vim74/macros/matchit.vim
+let b:match_words = "<:>,<div.*>:</div>,<table.*>:</table>,<ul.*>:</ul>,[:]"
 let b:match_ignorecase = 1    "大文字、小文字の区別をなくす。
 
 "===============================================================
@@ -232,8 +231,8 @@ if !exists('g:hi_insert')
 endif
 
 if has('unix') && !has('gui_running')
-	inoremap <silent> <ESC> <ESC>
-	inoremap <silent> <C-[> <ESC>
+  inoremap <silent> <ESC> <ESC>
+  inoremap <silent> <C-[> <ESC>
 endif
 
 if has('syntax')
@@ -266,6 +265,7 @@ function! s:GetHighlight(hi)
 endfunction
 "===========================================================================
 "ウィンドウの位置とサイズの保存	---堀野守克--- 11/03/21 ---
+"	注意　予め $HOME/AppData/Local の中にディレクトリ Vim を作成しておくこと。　15/05/16
 " save window position and window size {
 let s:save_size = '$HOME/AppData/Local/Vim/_savesize.vim'
 au GUIEnter * if filereadable(expand(s:save_size)) | execute 'source ' . s:save_size | endif
@@ -285,12 +285,16 @@ endfunction
 au VimLeave * if has("gui_running") | silent call SaveSizes() | endif
 "}
 "MRU Fileのデータの保存場所   --- 堀野 守克 --- 2011/03/21
+"	注意　予め $HOME/AppData/Local の中にディレクトリ Vim を作成しておくこと。　15/05/16
+"
 let MRU_File=$HOME . '\AppData\Local\Vim\_vim_mru_files'
 let MRU_Max_Entries= 10
 "Fav_menuのデータの保存場所 --- 堀野 守克 --- 2011/03/21
 let $FAVOURITES = $HOME . '\AppData\Local\Vim\_vimfavourites'
 "===========================================================================
 " ファイル操作に関する設定:
+"
+"	注意 予め $HOME\AppData\Local\Vim\ の中に Vim_backup というディレクトリを作成しておくこと	15/05/16
 "
 " バックアップファイルを作成しない (次行の先頭の " を削除すれば有効になる)
 set nobackup
@@ -322,70 +326,115 @@ nmap <silent> <F6> :VersDiff +<cr>
 nmap <silent> <F8> :VersDiff -c<cr>
 
 set autowrite
+"
 "===========================================================================
-"	折り畳みの設定
-:set foldmethod=marker
-"===========================================================================
-"------- neobundle.vim の設定 ---- 2013/09/04 ----------
+""------- neobundle.vim の設定 ---- 2014/08/05 ----------
 set nocompatible
-filetype off		"for vundle
+filetype plugin indent off		"for vundle
 
+"	vim起動時のみruntimepathにneobundle.vimを追加
 if has("vim_starting")
-	set runtimepath+=c:\Vim\MyPlugin\bundle\neobundle.vim
-	"set rtp+=$HOME/_vim/bundle/neobundle.vim/
-	call neobundle#rc(expand('~/.vim/bundle'))
+	set nocompatible
+	set runtimepath+=D:\MydownloadProgram\Vim\vimfiles\neobundle.vim
 endif
+
+" Required:
+"	neobundle.vimの初期化
+"	Neobundleを更新するための設定
+call neobundle#begin(expand('d:\MydownloadProgram\Vim\vimfiles\bundle'))
 
 " NeoBundle
 let $GIT_PROTOCOL = 'git'
 let $GITHUB_COM = $GIT_PROTOCOL.'://github.com/'
 
-NeoBundle $GITHUB_COM.'Shougo/neobundle.vim'
-NeoBundle $GITHUB_COM.'Shougo/neocomplcache.git'
-NeoBundle $GITHUB_COM.'Shougo/unite.vim.git'
-NeoBundle $GITHUB_COM.'tpope/vim-surround.git'
-"NeoBundle $GITHUB_COM.'vim-scrips/savevers.vim'
-"NeoBundle $GITHUB_COM.'vim-scrips/FavMenu.vim'
-"NeoBundle 'Shougo/vimshell.git'
-"NeoBundle 'Shougo/vimproc.git'
-
-filetype plugin on
-filetype indent on
+" neobundle自体をneobundleで管理
+"NeoBundleFetch $GITHUB_COM.'Shougo/neobundle.vim'
+NeoBundleFetch 'Shougo/neobundle.vim'
 "
-"-------- neocomplcache.vim を使う -----------------------------
-" neocomplcacheを起動時に有効化
-let g:neocomplcache_enable_at_startup = 1
+"" Required:
+""	読み込むプラグインを記載 [ Neobundle で管理するプラグインをここに書く ]
+"NeobundleFetch $GITHUB_COM.'Shougo/unite.vim'
+"Neobundle 'Shougo/vimfiler'
+"Neobundle 'Shougo/vimproc'
+"
+"NeoBundle 'Shougo/neocomplete'
+"NeoBundle 'Shougo/neosnippet'
+"NeoBundle 'Shougo/neosnippet-snippets'
+"
+call neobundle#end()
+"
+""	読み込んだプラグインも含め、ファイルタイプの検出、ファイルタイプ別プラグイン/
+""	インデントを有効とする
+filetype plugin indent on
+"
+""インストールのチェック
+"" 未インストールのプラグインがある場合、インストールするかどうかを尋ねてくれるようにする設定
+"" 毎回聞かれると邪魔な場合もあるので、この設定は任意です。
+NeoBundleCheck
+"""
+""" end Neobundle settings
+"""
+"===========================================================================
+"------- neocomplete.vim を使う ------ 2015/05/27 
+"  AutoComplPop を停止する
+"let g:acp_enableAtStartup = 0
+"if neobundle#is_installed('neocomplete')
+"	" neocompleteを起動時に有効化
+"	let g:neocomplete#enable_at_startup = 1
+"	" 大文字/小文字の区別をしない
+"	let g:neocomplete#enable_ignore_case = 1
+"	" 大文字が入力されるまで大文字小文字の区別を無視する
+"	let g:neocomplete#enable_smart_case = 1
+"	" Set minimum syntax keyword length.
+"	let g:neocomplete#sources#syntax#min_keyword_length = 3
+"	let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+"
+"	" Define dictionary.
+"	let g:neocomplete#sources#dictionary#dictionaries = {
+"		\ 'default' : '',
+"		\ 'vimshell' : $HOME.'/.vimshell_hist',
+"		\ 'scheme' : $HOME.'/.gosh_completions'
+"			\ }
+"
+"	" Define keyword.
+"	if !exists('g:neocomlete#keyword_patterns ')
+"		let g:neocomplete#keyword_patterns = {}
+"	endif
+"	let g:neocomplete#keyword_patterns._= '\h\w*'
+"endif
+"**********************************************************
+"()
 " dictionary
-let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : '',
-    \ 'objc' : $HOME . '/.vim/dict/objc.dict'
-\ }
-
-" 辞書読み込み
-noremap  d. :NeoComplCacheCachingDictionary
+"let g:neocomplcache_dictionary_filetype_lists = {
+"    \ 'default' : '',
+"    \ 'objc' : $HOME . '/.vim/dict/objc.dict'
+"\ }
 "
-" 日本語をキャッシュしない
-if !exists('g:neocomplcache_keyword_patterns')
-  let g:neocomplcache_keyword_patterns = {}
-endif
-let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
-
-" 大文字が入力されるまで大文字小文字の区別を無視する
-let g:neocomplcache_enable_smart_case = 1
-
-"" 区切り(underbar)の補完を有効化
-let g:neocomplcache_enable_underbar_completion = 1
+"" 辞書読み込み
+"noremap  d. :NeoComplCacheCachingDictionary
+""
+"" 日本語をキャッシュしない
+"if !exists('g:neocomplcache_keyword_patterns')
+"  let g:neocomplcache_keyword_patterns = {}
+"endif
+"let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 "
-" シンタックスをキャッシュするときの最小文字長を3
-let g:neocomplcache_min_syntax_length = 3
-
-" snippetsファイルのディレクトリパス
-let g:neocomplcache_snippets_dir = '~/vimfiles/snippets'
-"let g:neocomplcache_snippets_dir = '~/.vim/snippets'
+"" 大文字が入力されるまで大文字小文字の区別を無視する
+"let g:neocomplcache_enable_smart_case = 1
 "
-" snippetsファイルのキーバインド（Tab)
-imap <silent> <Tab> <Plug>(neocomplcache_snippets_expand)
-smap <silent> <Tab> <Plug>(neocomplcache_snippets_expand)
+""" 区切りの補完を有効化
+"let g:neocomplcache_enable_underbar_completion = 1
+""
+"" シンタックスをキャッシュするときの最小文字長を3
+"let g:neocomplcache_min_syntax_length = 3
+"
+"" snippetsファイルのディレクトリパス
+"let g:neocomplcache_snippets_dir = '~/vimfiles/snippets'
+""let g:neocomplcache_snippets_dir = '~/.vim/snippets'
+""
+"" snippetsファイルのキーバインド（Tab)
+""imap <silent> <Tab> <Plug>(neocomplcache_snippets_expand)
+"smap <silent> <Tab> <Plug>(neocomplcache_snippets_expand)
 
 "" Enable heavy omni completion. ruby用
 "if !exists('g:neocomplcache_omni_patterns')
@@ -415,13 +464,17 @@ smap <silent> <Tab> <Plug>(neocomplcache_snippets_expand)
 
 " 補完をキャンセル
 "inoremap neocomplcache#close_popup()
-
+"===========================================================================
 " 閉じ括弧を自動補完
-"inoremap ( ()i
+"inoremap ( ()<left>
 "inoremap ) ClosePair(')')
-"inoremap { {}i
+"inoremap { {}<left>
+"inoremap [ []<left>
 "inoremap } ClosePair('}')
-"inoremap [ []i
+"inoremap < <><left>
+"inoremap " ""<left>
+"inoremap ' ''<left>
+
 "inoremap ] ClosePair(']')
 
 " pair close checker.
@@ -433,59 +486,11 @@ smap <silent> <Tab> <Plug>(neocomplcache_snippets_expand)
 "        return a:char
 "    endif
 "endf
-"=== 以下は印刷設定 ==================================================="{{{
-"----- 行番号付きで印刷 -----------------------------------------------
-"if &number                     " numberの設定に会わせる
-"    set printoptions+=number:y
-"else
-"    set printoptions+=number:n
-"endif
-"------ 改ページ文字で、改ページする ---------------------------------
-"set printoptions+=formfeed:y	"改ページ文字で、改ページする
-"set printoptions +=fromfeed:n	"                         しない
-"----- 用紙の向き -----------------------------------------------------
-"set printoptions+=portrait:y
-"----- 印刷の方法 -----------------------------------------------------
-"set printoptions+=duplex:off	"片面印刷
-"set printoptions+=duplex:long	"両面印刷　綴じ方向縦　長い辺で綴じる
-"set printoptions+=duplex:short	"片面印刷　綴じ方向横　短い辺で綴じる
-"----- Syntaxハイライト -----------------------------------------------
-"set printoptions+=syntax:y    " Syntaxハイライト有効で印刷
-"set printoptions+=syntax:n    " Syntaxハイライト無効で印刷
-"set printoptions+=syntax:a     " カラー印刷可能ならSyntaxハイライト有効
-"----- 用紙サイズ -----------------------------------------------------
-"set printoptions+=paper:A4
-"set printoptions+=paper:B5
-" ------ 印刷用フォント ----- 堀野守克 --- font gothic 9pt -----------
-"if has('printer')
-"  if has('win32')
-"	set printfont=VL_Gothic_Regular:h8:cSHIFTJIS
-	"set printfont=VL_Gothic_Regular:h9:cSHIFTJIS
-    "set printfont=MS_Mincho:h10:cSHIFTJIS
-    "set printfont=MS_Gothic:h9:cSHIFTJIS
-"  endif
-"endif
-"----- 印刷ヘッダーの設定  ---堀野守克--- 08/05/11 --------------------
-"function! Pages()	"---- 堀野守克 ---- 2012/07/09 
-
-"	let	linespage = 61	"A4 font 9pt
-"	let	linespage = 68	"A4 font 8pt
-	"let linespage = 62	"B5 font 8pt
-
-	"let	totalline = line('$')
-	"let	nr1 = totalline / linespage
-"	let nr2 = totalline % (linespage)	" %は剰余演算
-	"if nr2 != 0
-	"	let nr1 = nr1+1
-	"endif
-"	return nr1
-"endfunction
-"------- 最終更新日時の書式 --------------------------------------------
-"let autodate_format='%Y/%m/%d %H:%M:%S'
-"------- 印刷ヘッダ ----------------------------------------------------
-"set printheader=%t\ \ Update\ %{strftime(\"\%c\",getftime(expand(\"\%\%\")))}\ %=\ Page\ %N\ /\ %{line('$')/linespage}
-"set printheader=%t\ \ Update\ %{strftime(\"\%c\",getftime(expand(\"\%\%\")))}\ %=\ Page\ %N\ /\ %{Pages()} 
-"----------------------------------------------------------------------"}}}
+"===========================================================================
 finish
 "======================================================================
+
 " Copyright (C) 2007 KaoriYa/MURAOKA Taro
+
+
+

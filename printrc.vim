@@ -1,6 +1,7 @@
 " vim:set ts=4 sts=4 sw=4 tw=0: (この行に関しては:help modelineを参照)
-"	printrc.vim		堀野 守克		Last Change:2013/09/06 09:56:11.
-"		$VIM/vim73/plugin/printrc.vim
+"	printrc.vim		堀野 守克		Last Change:2015/05/26 11:36:16.
+"		$VIM/vim74/plugins/kaoriya//printrc.vim
+"
 " 印刷に関する設定:
 "	_vimrcにあった印刷関係の設定をここに移した。オリジナルのvimrcにある
 "	印刷関係の設定は削除する必要がある。削除をしていないと、このファイルの
@@ -34,9 +35,6 @@ set printoptions+=duplex:off	"片面印刷
 "set printoptions+=syntax:y    " Syntaxハイライト有効で印刷
 set printoptions+=syntax:n    " Syntaxハイライト無効で印刷
 "set printoptions+=syntax:a     " カラー印刷可能ならSyntaxハイライト有効
-"----- 用紙サイズ -----------------------------------------------------
-"set printoptions+=paper:A4
-set printoptions+=paper:B5
 " ------ 印刷用フォント ----- 堀野守克 --- font gothic 9pt -----------
 if has('printer')
   if has('win32')
@@ -46,7 +44,15 @@ if has('printer')
     "set printfont=MS_Gothic:h9:cSHIFTJIS
   endif
 endif
+"----- 用紙サイズ -----------------------------------------------------
+"set printoptions+=paper:A4
+set printoptions+=paper:B5
+
 "----- 印刷ヘッダーの設定  ---堀野守克--- 08/05/11 --------------------
+"set printoptions+=header:0  " ヘッダーを印刷しない
+"set printoptions+=header:1  " ヘッダー、本文間にスペースを空けない
+set printoptions+=header:2   " ヘッダー、本文間に1行入れる
+
 function! Pages()	"---- 堀野守克 ---- 2012/07/09 
 
 "	let	linespage = 61	"A4 font 9pt portrait:y
@@ -65,7 +71,7 @@ endfunction
 "------- 最終更新日時の書式 --------------------------------------------
 let autodate_format='%Y/%m/%d %H:%M:%S'
 "------- 印刷ヘッダ ----------------------------------------------------
-set printheader=%t\ \ Update\ %{strftime(\"\%c\",getftime(expand(\"\%\%\")))}\ %=\ Page\ %N\ /\ %{Pages()} 
+set printheader=%t\ \ Update\ %{strftime(\"\%c\"),getftime(expand(\"\%\%\"))}\ \ \ \ Page\ %N\ /\ %{Pages()} 
 "----------------------------------------------------------------------
 finish
 "======================================================================

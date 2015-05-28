@@ -2,7 +2,7 @@
 "
 " Menu Translations:	Japanese (CP932)
 " Translated By:	MURAOKA Taro  <koron.kaoriya@gmail.com>
-" Last Change:		2013/09/04 10:26:17.
+" Last Change:		2015/05/26 17:58:51.
 "
 " Copyright (C) 2001-13 MURAOKA Taro <koron.kaoriya@gmail.com>
 " THIS FILE IS DISTRIBUTED UNDER THE VIM LICENSE.
