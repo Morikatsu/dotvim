@@ -3,7 +3,7 @@
 " An example for a Japanese version vimrc file.
 " 日本語版のデフォルト設定ファイル(vimrc) - Vim7用試作
 "
-" Last Change: 2015/05/28 15:45:48.  ----- 堀野守克 ----- 07/07/17 ---
+" Last Change: 2015/06/03 11:51:54.  ----- 堀野守克 ----- 07/07/17 ---
 " Maintainer:  MURAOKA Taro <koron@tka.att.ne.jp>
 "
 " 解説:
@@ -27,8 +27,10 @@
 " 行うこととした。  2013/05/29 
 "
 "	重要な注意事項
-"	注意 予め $HOME/AppData/Local の中にディレクトリ Vim を作成しておくこと。　15/05/16
-"	注意 予め $HOME\AppData\Local\Vim\ の中に Vim_backup というディレクトリを作成しておくこと	15/05/16
+"	注意 予め $HOME/AppData/Local の中にディレクトリ Vim を作成しておくこと。
+"		　15/05/16
+"	注意 予め $HOME\AppData\Local\Vim\ の中に Vim_backup というディレクトリを
+"		作成しておくこと	15/05/16
 "
 " 管理者向けに本設定ファイルを直接書き換えずに済ませることを目的として、サイ
 " トローカルな設定を別ファイルで行なえるように配慮してあります。Vim起動時に
@@ -113,13 +115,32 @@ set visualbell
 "
 "===========================================================================
 " key binding
-"		<F12> をカーソル位置に日付を入れる機能を割り付けた
+"		<F12> を行末位置に日付を入れる機能を割り付けた
 "
-map <F12> :r !date /t<CR>kJ
-map! <F12> <Esc>:r !date /t<CR>kJ
-"--- 入力モードのときに括弧を自動で閉じる ---
-imap ( ()<LEFT><ESC>i
-map { {}<LEFT><ESC>i
+map <F12> :r !date /t<CR>kJ		"normal, visual, 演算モード
+map! <F12> <Esc>:r !date /t<CR>kJ	"insert, command 
+"===========================================================================
+"--- 入力モードのときに閉じ括弧を自動で閉じる ---
+inoremap ( ()<left>
+"inoremap ) ClosePair(')')
+inoremap { {}<left>
+inoremap [ []<left>
+"inoremap } ClosePair('}')
+inoremap < <><left>
+inoremap " ""<left>
+inoremap ' ''<left>
+
+"inoremap ] ClosePair(']')
+
+" pair close checker.
+" from othree vimrc ( http://github.com/othree/rc/blob/master/osx/.vimrc )
+function ClosePair(char)
+    if getline('.')[col('.') - 1] == a:char
+        return "\"
+    else
+        return a:char
+    endif
+endf
 "--- 入力モードでもh,j,k,lの動作 -----------------------------
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
@@ -284,6 +305,7 @@ function! SaveSizes()
 endfunction
 au VimLeave * if has("gui_running") | silent call SaveSizes() | endif
 "}
+"===========================================================================
 "MRU Fileのデータの保存場所   --- 堀野 守克 --- 2011/03/21
 "	注意　予め $HOME/AppData/Local の中にディレクトリ Vim を作成しておくこと。　15/05/16
 "
@@ -327,39 +349,47 @@ nmap <silent> <F8> :VersDiff -c<cr>
 
 set autowrite
 "
-"===========================================================================
-""------- neobundle.vim の設定 ---- 2014/08/05 ----------
+"""===========================================================================
+"""------- neobundle.vim の設定 ---- 2015/05/31 ----------
+"""
 set nocompatible
 filetype plugin indent off		"for vundle
 
 "	vim起動時のみruntimepathにneobundle.vimを追加
 if has("vim_starting")
 	set nocompatible
-	set runtimepath+=D:\MydownloadProgram\Vim\vimfiles\neobundle.vim
+	set runtimepath+=D:\MydownloadProgram\Vim\vim74-kaoriya-win64\_bundle\neobundle.vim
 endif
 
 " Required:
 "	neobundle.vimの初期化
 "	Neobundleを更新するための設定
-call neobundle#begin(expand('d:\MydownloadProgram\Vim\vimfiles\bundle'))
+call neobundle#begin(expand('d:\MydownloadProgram\Vim\vim74-kaoriya-win64\_bundle'))
 
+filetype plugin indent on		"for vundle		************** 2015/06/02 
+"
 " NeoBundle
-let $GIT_PROTOCOL = 'git'
-let $GITHUB_COM = $GIT_PROTOCOL.'://github.com/'
 
 " neobundle自体をneobundleで管理
-"NeoBundleFetch $GITHUB_COM.'Shougo/neobundle.vim'
 NeoBundleFetch 'Shougo/neobundle.vim'
+
+" Installation check.		********************* 2015/06/02 
+if neobundle#exists_not_installed_bundles()
+  echomsg 'Not installed bundles : ' .
+        \ string(neobundle#get_not_installed_bundle_names())
+  echomsg 'Please execute ":NeoBundleInstall" command.'
+  "finish
+endif				"*********************** 2015/06/02 
 "
 "" Required:
 ""	読み込むプラグインを記載 [ Neobundle で管理するプラグインをここに書く ]
-"NeobundleFetch $GITHUB_COM.'Shougo/unite.vim'
+NeoBundle 'Shougo/unite.vim'
 "Neobundle 'Shougo/vimfiler'
 "Neobundle 'Shougo/vimproc'
 "
-"NeoBundle 'Shougo/neocomplete'
-"NeoBundle 'Shougo/neosnippet'
-"NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets.vim'
 "
 call neobundle#end()
 "
@@ -377,31 +407,31 @@ NeoBundleCheck
 "===========================================================================
 "------- neocomplete.vim を使う ------ 2015/05/27 
 "  AutoComplPop を停止する
-"let g:acp_enableAtStartup = 0
-"if neobundle#is_installed('neocomplete')
-"	" neocompleteを起動時に有効化
-"	let g:neocomplete#enable_at_startup = 1
-"	" 大文字/小文字の区別をしない
-"	let g:neocomplete#enable_ignore_case = 1
-"	" 大文字が入力されるまで大文字小文字の区別を無視する
-"	let g:neocomplete#enable_smart_case = 1
-"	" Set minimum syntax keyword length.
-"	let g:neocomplete#sources#syntax#min_keyword_length = 3
-"	let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+let g:acp_enableAtStartup = 0
+if neobundle#is_installed('neocomplete')
+	" neocompleteを起動時に有効化
+	let g:neocomplete#enable_at_startup = 1
+	" 大文字/小文字の区別をしない
+	let g:neocomplete#enable_ignore_case = 1
+	" 大文字が入力されるまで大文字小文字の区別を無視する
+	let g:neocomplete#enable_smart_case = 1
+	" Set minimum syntax keyword length.
+	let g:neocomplete#sources#syntax#min_keyword_length = 3
+	let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 "
-"	" Define dictionary.
-"	let g:neocomplete#sources#dictionary#dictionaries = {
-"		\ 'default' : '',
-"		\ 'vimshell' : $HOME.'/.vimshell_hist',
-"		\ 'scheme' : $HOME.'/.gosh_completions'
-"			\ }
+	" Define dictionary.
+	let g:neocomplete#sources#dictionary#dictionaries = {
+		\ 'default' : '',
+		\ 'vimshell' : $HOME.'/.vimshell_hist',
+		\ 'scheme' : $HOME.'/.gosh_completions'
+			\ }
 "
-"	" Define keyword.
-"	if !exists('g:neocomlete#keyword_patterns ')
-"		let g:neocomplete#keyword_patterns = {}
-"	endif
-"	let g:neocomplete#keyword_patterns._= '\h\w*'
-"endif
+	" Define keyword.
+	if !exists('g:neocomlete#keyword_patterns ')
+		let g:neocomplete#keyword_patterns = {}
+	endif
+	let g:neocomplete#keyword_patterns._= '\h\w*'
+endif
 "**********************************************************
 "()
 " dictionary
@@ -422,15 +452,16 @@ NeoBundleCheck
 "" 大文字が入力されるまで大文字小文字の区別を無視する
 "let g:neocomplcache_enable_smart_case = 1
 "
-""" 区切りの補完を有効化
+"" 区切りの補完を有効化
 "let g:neocomplcache_enable_underbar_completion = 1
 ""
 "" シンタックスをキャッシュするときの最小文字長を3
 "let g:neocomplcache_min_syntax_length = 3
 "
 "" snippetsファイルのディレクトリパス
+"let g:neocomplcache_snippets_dir = '$VIM//vimfiles/snippets'
 "let g:neocomplcache_snippets_dir = '~/vimfiles/snippets'
-""let g:neocomplcache_snippets_dir = '~/.vim/snippets'
+"let g:neocomplcache_snippets_dir = '~/.vim/snippets'
 ""
 "" snippetsファイルのキーバインド（Tab)
 ""imap <silent> <Tab> <Plug>(neocomplcache_snippets_expand)
@@ -465,32 +496,6 @@ NeoBundleCheck
 " 補完をキャンセル
 "inoremap neocomplcache#close_popup()
 "===========================================================================
-" 閉じ括弧を自動補完
-"inoremap ( ()<left>
-"inoremap ) ClosePair(')')
-"inoremap { {}<left>
-"inoremap [ []<left>
-"inoremap } ClosePair('}')
-"inoremap < <><left>
-"inoremap " ""<left>
-"inoremap ' ''<left>
-
-"inoremap ] ClosePair(']')
-
-" pair close checker.
-" from othree vimrc ( http://github.com/othree/rc/blob/master/osx/.vimrc )
-"function ClosePair(char)
-"    if getline('.')[col('.') - 1] == a:char
-"        return "\"
-"    else
-"        return a:char
-"    endif
-"endf
-"===========================================================================
 finish
 "======================================================================
-
 " Copyright (C) 2007 KaoriYa/MURAOKA Taro
-
-
-

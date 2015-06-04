@@ -807,8 +807,8 @@ endif " !exists("no_buffers_menu")
 
 " Window menu
 an 70.300 &Window.&New<Tab>^Wn			<C-W>n
-an 70.305 &Window.V&ertical<Tab>:vne :vne<CR>
-an 70.307 &Window.-SEP0-				<Nop>
+"an 70.305 &Window.V&ertical<Tab>:vne :vne<CR>
+"an 70.307 &Window.-SEP0-				<Nop>
 an 70.310 &Window.S&plit<Tab>^Ws		<C-W>s
 an 70.320 &Window.Sp&lit\ To\ #<Tab>^W^^	<C-W><C-^>
 an 70.330 &Window.Split\ &Vertically<Tab>^Wv	<C-W>v
@@ -825,18 +825,15 @@ if has("vertsplit")
   endif
 endif
 an 70.335 &Window.-SEP1-				<Nop>
+
 an 70.340 &Window.&Close<Tab>^Wc			:confirm close<CR>
 an 70.345 &Window.Close\ &Other(s)<Tab>^Wo		:confirm only<CR>
 an 70.350 &Window.-SEP2-				<Nop>
-an 70.353 &Window.e&Xchange<Tab>^WX	<C-W>x
-"an 70.353 &Window.Move\ &To.e&Xchange<Tab>^WX	<C-W>x
+
 an 70.355 &Window.Move\ &To.&Top<Tab>^WK		<C-W>K
 an 70.355 &Window.Move\ &To.&Bottom<Tab>^WJ		<C-W>J
 an 70.355 &Window.Move\ &To.&Left\ side<Tab>^WH		<C-W>H
 an 70.355 &Window.Move\ &To.&Right\ side<Tab>^WL	<C-W>L
-
-an 70.357 &Window.Move\ Ne&xt<Tab>^Ww			<C-W>w
-an 70.358 &Window.Move\ P&revious<Tab>^WW		<C-W>W
 
 an 70.360 &Window.Rotate\ &Up<Tab>^WR			<C-W>R
 an 70.362 &Window.Rotate\ &Down<Tab>^Wr			<C-W>r

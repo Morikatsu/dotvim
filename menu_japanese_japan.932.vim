@@ -2,7 +2,7 @@
 "
 " Menu Translations:	Japanese (CP932)
 " Translated By:	MURAOKA Taro  <koron.kaoriya@gmail.com>
-" Last Change:		2015/05/26 17:58:51.
+" Last Change:		2015/06/02 15:56:56.
 "
 " Copyright (C) 2001-13 MURAOKA Taro <koron.kaoriya@gmail.com>
 " THIS FILE IS DISTRIBUTED UNDER THE VIM LICENSE.
@@ -221,14 +221,14 @@ menutrans &Close<Tab>^Wc		閉じる(&C)<Tab>^Wc
 menutrans Close\ &Other(s)<Tab>^Wo	他を閉じる(&O)<Tab>^Wo
 
 menutrans e&Xchange<Tab>^WX		左右交換(&X)<Tab>^Wx
+menutrans Move\ Ne&xt<Tab>^Ww		次へ移動(&X)<Tab>^Ww
+menutrans Move\ P&revious<Tab>^WW	前へ移動(&R)<Tab>^WW
+
 menutrans Move\ &To			移動(&T)
 menutrans &Top<Tab>^WK			上(&T)<Tab>^WK
 menutrans &Bottom<Tab>^WJ		下(&B)<Tab>^WJ
 menutrans &Left\ side<Tab>^WH		左(&L)<Tab>^WH
 menutrans &Right\ side<Tab>^WL		右(&R)<Tab>^WL
-
-menutrans Move\ Ne&xt<Tab>^Ww		次へ移動(&X)<Tab>^Ww
-menutrans Move\ P&revious<Tab>^WW	前へ移動(&R)<Tab>^WW
 
 menutrans Rotate\ &Up<Tab>^WR		上にローテーション(&U)<Tab>^WR
 menutrans Rotate\ &Down<Tab>^Wr		下にローテーション(&D)<Tab>^Wr
